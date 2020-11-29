@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using WorldBuilder.Data;
 using Console = SadConsole.Console;
 
 namespace WorldBuilder.Backend
@@ -21,6 +22,11 @@ namespace WorldBuilder.Backend
                 col = 0;
 
             console.Print(col, row, text, color);
+        }
+
+        public static void SwitchWorld(this Console console, World world)
+        {
+            //TODO
         }
     }
 }

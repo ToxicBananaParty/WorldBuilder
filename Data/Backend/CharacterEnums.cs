@@ -13,7 +13,6 @@
     public enum Race
     {
         //TODO: Name generators for:
-        //    1) Human
         //    2) Elf
         //    3) Dwarf
         //    4) Gnome

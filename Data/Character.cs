@@ -21,19 +21,19 @@ namespace WorldBuilder.Data
 
         public Character()
         {
-            //TODO: Character Name Generator
             //TODO: Generate birthdate
             gender = (Gender) Program.RandomInt((int) Gender.NUM_GENDERS);
             race = (Race) Program.RandomInt((int) Race.NUM_RACES);
+            generateName(race);
             initStats();
         }
 
         public Character(Gender gender)
         {
-            //TODO: Character Name Generator
             //TODO: Generate birthdate
             this.gender = gender;
             race = (Race) Program.RandomInt((int) Race.NUM_RACES);
+            generateName(race);
             initStats();
         }
 
@@ -66,6 +66,18 @@ namespace WorldBuilder.Data
             attributes.Add(Attribute.Charisma, 0);
             attributes.Add(Attribute.Constitution, 0);
         }
+
+        private void generateName(Race race)
+        {
+            //TODO: The rest of the races
+            switch (race) {
+                case(Race.Human):
+                    name = NameGenerator.GenerateHuman(gender);
+                    break;
+                default:
+                    break;
+            }
+        }
         
         #region Static Methods
 
@@ -81,6 +93,9 @@ namespace WorldBuilder.Data
 
             if (toCheck == Gender.NonBinary)
                 return 0;
+            
+            if(toCheck == Gender.NUM_GENDERS || toCheck == Gender.RANDOM)
+                throw new ArgumentException("Trying to getGender of NUM_GENDERS or RANDOM");
 
             return 1;
         }

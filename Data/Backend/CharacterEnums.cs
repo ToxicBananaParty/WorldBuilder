@@ -41,6 +41,7 @@
         NonBinary,
         TransMale,
         TransFemale,
-        NUM_GENDERS
+        NUM_GENDERS,
+        RANDOM
     }
 }

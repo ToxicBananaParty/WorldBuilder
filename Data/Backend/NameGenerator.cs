@@ -87,7 +87,6 @@ namespace WorldBuilder.Data.Backend
 
         private string getHuman(Gender gender)
         {
-            //TODO Check gender
             string firstname = "", lastname = "";
 
             if (Character.getGender(gender) > 0) {

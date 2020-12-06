@@ -39,7 +39,7 @@ namespace WorldBuilder.Data.Backend
 
             return firstname + " " + lastname;
         }
-        
+
         //EXISTS ONLY TO BE READ FROM JSON
         //ALL LOGIC DONE IN NameGenerator CLASS
         public class NameList

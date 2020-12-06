@@ -13,12 +13,11 @@ namespace WorldBuilder
         public const int Height = 36;
 
         private static Random rand;
-        private static NameGenerator nameGenerator;
 
         static void Main(string[] args)
         {
             rand = new Random(DateTime.Now.Millisecond);
-            nameGenerator = new NameGenerator();
+            NameGenerator instance = new NameGenerator();
             
             // Setup the engine and create the main window.
             SadConsole.Game.Create(Width, Height);
@@ -54,7 +53,7 @@ namespace WorldBuilder
         {
             if (Global.KeyboardState.IsKeyPressed(Keys.F)) {
                 Global.CurrentScreen.Clear();
-                Global.CurrentScreen.Print(6, 5, nameGenerator.GenerateHuman(Gender.CisMale));
+                Global.CurrentScreen.Print(6, 5, NameGenerator.GenerateHuman((Gender)RandomInt((int)Gender.NUM_GENDERS)));
             }
         }
     }

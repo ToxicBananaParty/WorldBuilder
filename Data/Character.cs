@@ -66,6 +66,26 @@ namespace WorldBuilder.Data
             attributes.Add(Attribute.Charisma, 0);
             attributes.Add(Attribute.Constitution, 0);
         }
+        
+        #region Static Methods
+
+        public static int getGender(Character toCheck)
+        {
+            return getGender(toCheck.gender);
+        }
+
+        public static int getGender(Gender toCheck)
+        {
+            if (toCheck == Gender.CisFemale || toCheck == Gender.TransFemale)
+                return -1;
+
+            if (toCheck == Gender.NonBinary)
+                return 0;
+
+            return 1;
+        }
+        
+        #endregion
 
         #region Accessors and Mutators
 
@@ -82,7 +102,7 @@ namespace WorldBuilder.Data
 
         public void changeGender()
         {
-            if (isMale())
+            if (getGender(this) > 0)
                 this.gender = Gender.TransFemale;
             else
                 this.gender = Gender.TransMale;
@@ -107,11 +127,6 @@ namespace WorldBuilder.Data
         {
             alive = false;
             deathdate = myWorld.date;
-        }
-
-        public bool isMale()
-        {
-            return gender == Gender.CisMale || gender == Gender.TransMale;
         }
 
         public bool Equals(Character other)

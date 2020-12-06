@@ -2,49 +2,57 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using static WorldBuilder.Program;
 
 namespace WorldBuilder.Data.Backend
 {
-    public class NameGenerator
+    public static class NameGenerator
     {
+        public static NameList instance;
+        
+        public static string GenerateHuman(Gender gender)
+        {
+            if(instance == null)
+                throw new NullReferenceException("NameGenerator instance is null");
+
+            if (gender == Gender.RANDOM) {
+                gender = (Gender)RandomInt((int)Gender.NUM_GENDERS);
+            }
+            
+            NameList.HumanName humanName = instance.humanName;
+            string firstname, lastname;
+
+            if (Character.getGender(gender) > 0) {
+                firstname = humanName.male[RandomInt(humanName.male.Length)];
+            }
+            else if (Character.getGender(gender) < 0) {
+                firstname = humanName.female[RandomInt(humanName.female.Length)];
+            }
+            else {
+                List<string> firstNames = new List<string>();
+                firstNames.AddRange(humanName.male);
+                firstNames.AddRange(humanName.female);
+                firstname = firstNames[RandomInt(firstNames.Count)];
+            }
+
+            lastname = humanName.surname[RandomInt(humanName.surname.Length)];
+
+            return firstname + " " + lastname;
+        }
+        
+        //EXISTS ONLY TO BE READ FROM JSON
+        //ALL LOGIC DONE IN NameGenerator CLASS
         public class NameList
         {
             [JsonProperty("human")]
             public HumanName humanName;
 
-            private List<string> humanFirstNames;
-
             public NameList()
             {
                 humanName = new HumanName();
-                humanFirstNames = new List<string>();
-            }
-            
-            public string humanmale(int index)
-            {
-                return humanName.male[index];
+                instance = this;
             }
 
-            public string humanfemale(int index)
-            {
-                return humanName.female[index];
-            }
-
-            public string humanenby(int index)
-            {
-                if (humanFirstNames.Count < 1) {
-                    humanFirstNames.AddRange(humanName.male);
-                    humanFirstNames.AddRange(humanName.female);
-                }
-
-                return humanFirstNames[index];
-            }
-
-            public string humansurname(int index)
-            {
-                return humanName.surname[index];
-            }
-            
             public class HumanName
             {
                 public string[] male { get; set; }
@@ -58,53 +66,6 @@ namespace WorldBuilder.Data.Backend
                     surname = new string[] { };
                 }
             }
-        }
-        
-        private static NameGenerator instance;
-
-        public static string GenerateHuman(Gender gender)
-        {
-            if(instance == null)
-                throw new NullReferenceException();
-            
-            return instance.getHuman(gender);
-        }
-
-        private NameList nameList;
-        public NameGenerator()
-        {
-            nameList = new NameList();
-            
-            JsonSerializer serializer = new JsonSerializer();
-            //TODO: Find file
-            using (StreamReader reader = new StreamReader("..//..//..//Data//Backend//names.json"))
-            using (JsonReader jr = new JsonTextReader(reader)) {
-                nameList = serializer.Deserialize<NameList>(jr);
-            }
-
-            instance = this;
-        }
-
-        private string getHuman(Gender gender)
-        {
-            string firstname = "", lastname = "";
-
-            if (Character.getGender(gender) > 0) {
-                //Male name
-                firstname = nameList.humanmale(Program.RandomInt(nameList.humanName.male.Length));
-            }
-            else if (Character.getGender(gender) < 0) {
-                //Female
-                firstname = nameList.humanfemale(Program.RandomInt(nameList.humanName.male.Length));
-            }
-            else {
-                //Nonbinary
-                firstname = nameList.humanenby(Program.RandomInt(nameList.humanName.male.Length 
-                                                                 + nameList.humanName.female.Length));
-            }
-            
-            lastname = nameList.humansurname(Program.RandomInt(nameList.humanName.surname.Length));
-            return firstname + " " + lastname;
         }
     }
 }

@@ -1,5 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using SadConsole;
 using Console = SadConsole.Console;
+using Game = SadConsole.Game;
 
 namespace WorldBuilder.Data.Backend
 {
@@ -23,6 +27,22 @@ namespace WorldBuilder.Data.Backend
 				col = 0;
 			
             console.Print(col, row, text, color);
+        }
+
+        public static void PrintRow(this Console console, int row, string text)
+        {
+	        for (int i = 0; i < Program.Width; i++)
+	        {
+		        console.Print(i, row, text);
+	        }
+        }
+
+        public static void PrintRow(this Console console, int row, string text, Color color)
+        {
+	        for (int i = 0; i < Program.Width; i++)
+	        {
+		        console.Print(i, row, text, color);
+	        }
         }
     }
 }

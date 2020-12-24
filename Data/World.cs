@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Runtime.InteropServices;
+using WorldBuilder.Data.Backend;
 
 namespace WorldBuilder.Data
 {
@@ -15,15 +17,33 @@ namespace WorldBuilder.Data
 
         public string name { get; private set; }
         
-        public World()
+        public World(string name)
         {
+            this.name = name;
             initStats();
         }
 
-        public void AdvanceDay()
+        public void AdvanceDay(bool newGame = false)
         {
             date = date.AddDays(1);
             //TODO: Any daily logic here
+
+            if (newGame)
+            {
+                //Game will make chars, locations, etc from nothing more often in world generation stage
+                //After that will make chars, locations, etc mostly from existing chars, locations, etc.
+                MakeSomething();
+            }
+            else
+            {
+                
+            }
+        }
+
+        public void AdvanceDays(int numDays, bool newGame)
+        {
+            for(int i = 0; i < numDays; i++)
+                AdvanceDay(newGame);
         }
 
         private void initStats()
@@ -34,6 +54,46 @@ namespace WorldBuilder.Data
             locations = new List<Location>();
             organizations = new List<Organization>();
             date = new DateTime(1, 1, 1);
+        }
+
+        private void MakeSomething()
+        {
+            //TODO: Give relations to current chars, orgs, locations
+            
+            int thingToDo = Program.RandomInt(0, 40);
+            if (thingToDo < 3)
+            {
+                locations.Add(new Location());
+            }
+            else if (thingToDo < 11)
+            {
+                characters.Add(new Character());
+            }
+            else if (thingToDo < 39)
+            {
+                //New Event
+                if (characters.Count < 5 || locations.Count < 2)
+                    return;
+
+                Event eve = new Event(characters[Program.RandomInt(characters.Count)]);
+                events.Add(eve);
+            }
+            else
+            {
+                //New Organization
+                if (characters.Count < 30 || locations.Count < 50)
+                    return;
+
+                Location hq = null;
+                do
+                {
+                    hq = locations[Program.RandomInt(locations.Count)];
+                } while (hq.type != LocationType.City && hq.type != LocationType.Temple &&
+                         hq.type != LocationType.Town);
+
+                Organization org = new Organization(hq);
+                organizations.Add(org);
+            }
         }
         
         #region Accessors and Mutators
@@ -91,6 +151,11 @@ namespace WorldBuilder.Data
         public void DeleteEvent(Event toDelete)
         {
             events.Remove(toDelete);
+        }
+
+        public void setDate(DateTime toSet)
+        {
+            date = toSet;
         }
         #endregion
     }

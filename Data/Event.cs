@@ -10,9 +10,19 @@ namespace WorldBuilder.Data
         public Character performer { get; private set; }
         public Character performee { get; private set; }
 
-        public Event()
+        public Event(Character performer)
         {
             //TODO: Event name generator
+
+            this.performer = performer;
+        }
+
+        public Event(Character performer, Character performee)
+        {
+            //TODO: Event name generator
+
+            this.performer = performer;
+            this.performee = performee;
         }
 
         public bool Equals(Event other)

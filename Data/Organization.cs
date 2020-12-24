@@ -13,6 +13,12 @@ namespace WorldBuilder.Data
             this.headquarters = headquarters;
         }
 
+        public Organization(Location headquarters)
+        {
+            //TODO: Generate name
+            this.headquarters = headquarters;
+        }
+
         #region Accessors and Mutators
 
         public bool Equals(Organization other)

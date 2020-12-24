@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
@@ -15,6 +16,8 @@ namespace WorldBuilder.Data
         public DateTime deathdate { get; private set; }
         public Race race { get; private set; }
         public Gender gender { get; private set; }
+        public Dictionary<Character, CharacterRelationship> relatedChars { get; private set; }
+        public Location homeBase { get; private set; } //TODO: Implement this
 
         private World myWorld;
         private bool alive;
@@ -37,6 +40,15 @@ namespace WorldBuilder.Data
             initStats();
         }
 
+        public Character(Gender gender, Race race)
+        {
+            //TODO: Generate birthdate
+            this.gender = gender;
+            this.race = race;
+            generateName(race);
+            initStats();
+        }
+
         public Character(string name, Gender gender)
         {
             //TODO: Generate birthdate
@@ -55,6 +67,27 @@ namespace WorldBuilder.Data
             initStats();
         }
 
+        public void HaveChild()
+        {
+            Character partner = null;
+            foreach (KeyValuePair<Character, CharacterRelationship> relatedChar in relatedChars)
+            {
+                if (relatedChar.Value == CharacterRelationship.Lover ||
+                    relatedChar.Value == CharacterRelationship.Spouse)
+                    partner = relatedChar.Key;
+            }
+
+            if (partner == null)
+            {
+                //TODO: Get partner from nearby related chars
+            }
+
+            Character child = new Character(Gender.RANDOM, race);
+            relatedChars.Add(child, CharacterRelationship.Child);
+            child.AddRelatedChar(this, CharacterRelationship.Parent);
+            child.AddRelatedChar(partner, CharacterRelationship.Parent);
+        }
+
         private void initStats()
         {
             myWorld = Core.WorldBuilder.instance;
@@ -65,6 +98,9 @@ namespace WorldBuilder.Data
             attributes.Add(Attribute.Intelligence, 0);
             attributes.Add(Attribute.Charisma, 0);
             attributes.Add(Attribute.Constitution, 0);
+            
+            if(gender == Gender.RANDOM)
+                gender = (Gender)Program.RandomInt((int)Gender.NUM_GENDERS);
         }
 
         private void generateName(Race race)
@@ -75,6 +111,7 @@ namespace WorldBuilder.Data
                     name = NameGenerator.GenerateHuman(gender);
                     break;
                 default:
+                    name = NameGenerator.GenerateHuman(gender);
                     break;
             }
         }
@@ -142,6 +179,16 @@ namespace WorldBuilder.Data
         {
             alive = false;
             deathdate = myWorld.date;
+        }
+
+        public void AddRelatedChar(Character toAdd, CharacterRelationship rel)
+        {
+            relatedChars.Add(toAdd, rel);
+        }
+
+        public void RemoveRelatedChar(Character toRemove)
+        {
+            relatedChars.Remove(toRemove);
         }
 
         public bool Equals(Character other)

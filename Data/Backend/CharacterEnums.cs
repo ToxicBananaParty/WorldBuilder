@@ -33,6 +33,22 @@
         NUM_RACES
     }
 
+    public enum CharacterRelationship
+    {
+        Friend,
+        Enemy,
+        Ally,
+        Liege,
+        Vassal,
+        Nemesis,
+        Lover,
+        Spouse,
+        Child,
+        Parent,
+        Sibling,
+        NUM_RELATIONSHIPS
+    }
+
     public enum Gender
     {
         CisMale,

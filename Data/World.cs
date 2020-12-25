@@ -63,6 +63,7 @@ namespace WorldBuilder.Data
             int thingToDo = Program.RandomInt(0, 40);
             if (thingToDo < 3)
             {
+                //TODO: Do not make a Location of LocationType if all its names are used
                 Location newLoc = new Location();
                 locations.Add(newLoc);
             }

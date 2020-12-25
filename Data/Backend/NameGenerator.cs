@@ -40,12 +40,27 @@ namespace WorldBuilder.Data.Backend
             return firstname + " " + lastname;
         }
 
+        public static string GenerateCity()
+        {
+            if (instance == null)
+                throw new NullReferenceException();
+
+            int cityToGet = RandomInt(instance.cityNames.Count);
+            string output = instance.cityNames[cityToGet];
+            instance.cityNames.RemoveAt(cityToGet);
+
+            return output;
+        }
+
         //EXISTS ONLY TO BE READ FROM JSON
         //ALL LOGIC DONE IN NameGenerator CLASS
         public class NameList
         {
             [JsonProperty("human")]
             public HumanName humanName;
+
+            [JsonProperty("city")] 
+            public List<string> cityNames;
 
             public NameList()
             {

@@ -14,12 +14,11 @@ namespace WorldBuilder.Data
 
         public Location()
         {
-            //TODO: Generate Name
-            name = "DEBUG_LOCATION";
             type = (LocationType) Program.RandomInt((int) LocationType.NUM_TYPES);
             relatedChars = new Dictionary<Character, LocationRelationship>();
             relatedChars.Add(new Character(), LocationRelationship.OwnerCaretaker);
             world = Core.WorldBuilder.instance;
+            name = GenerateName();
         }
 
         public Location(string name)
@@ -46,6 +45,28 @@ namespace WorldBuilder.Data
                 throw new ArgumentException();
             
             return name == other.name;
+        }
+
+        private string GenerateName()
+        {
+            //TODO: Case for every LocationType
+            switch (type)
+            {
+                case LocationType.City:
+                    return NameGenerator.GenerateCity();
+                case LocationType.Town:
+                    return "DEBUG_Town";
+                case LocationType.Village:
+                    return "DEBUG_Village";
+                case LocationType.Dungeon:
+                    return "DEBUG_Dungeon";
+                case LocationType.Temple:
+                    return "DEBUG_Temple";
+                case LocationType.GeographicalFeature:
+                    return "DEBUG_GeographicalFeature";
+                default:
+                    return "ERROR IN GENERATENAME SWITCH";
+            }
         }
     }
 }

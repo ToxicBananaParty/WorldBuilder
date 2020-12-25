@@ -41,10 +41,10 @@ namespace WorldBuilder.Core
             console.PrintRow(4, "=");
             
             console.PrintRow(30, "=");
-            console.Print(36, 32, "V - View Random Character");
-            console.Print(36, 33, "B - View Random Event");
-            console.Print(36, 34, "N - View Random Location");
-            console.Print(36, 35, "M - View Random Organization");
+            console.Print(36, 31, "V - View Random Character");
+            console.Print(36, 32, "B - View Random Event");
+            console.Print(36, 33, "N - View Random Location");
+            console.Print(36, 34, "M - View Random Organization");
         }
 
         private static void DisplayCharacter(Character character)

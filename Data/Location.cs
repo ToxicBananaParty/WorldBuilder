@@ -6,6 +6,8 @@ namespace WorldBuilder.Data
 {
     public class Location : IEquatable<Location>
     {
+        public static bool allCityNamesUsed, allTownNamesUsed, allVillageNamesUsed;
+        
         public World world { get; private set; }
         public string name { get; private set; }
         public LocationType type { get; private set; }
@@ -14,7 +16,7 @@ namespace WorldBuilder.Data
 
         public Location()
         {
-            type = (LocationType) Program.RandomInt((int) LocationType.NUM_TYPES);
+            type = generateType();
             relatedChars = new Dictionary<Character, LocationRelationship>();
             relatedChars.Add(new Character(), LocationRelationship.OwnerCaretaker);
             world = Core.WorldBuilder.instance;
@@ -24,7 +26,7 @@ namespace WorldBuilder.Data
         public Location(string name)
         {
             this.name = name;
-            type = (LocationType) Program.RandomInt((int) LocationType.NUM_TYPES);
+            type = generateType();
             relatedChars = new Dictionary<Character, LocationRelationship>();
             relatedChars.Add(new Character(), LocationRelationship.OwnerCaretaker);
             world = Core.WorldBuilder.instance;
@@ -67,6 +69,19 @@ namespace WorldBuilder.Data
                 default:
                     return "ERROR IN GENERATENAME SWITCH";
             }
+        }
+
+        private LocationType generateType()
+        {
+            LocationType output;
+            do
+            {
+                output = (LocationType) Program.RandomInt((int) LocationType.NUM_TYPES);
+            } while ((output == LocationType.City && allCityNamesUsed)
+                     || (output == LocationType.Town && allTownNamesUsed)
+                     || (output == LocationType.Village && allVillageNamesUsed));
+
+            return output;
         }
     }
 }

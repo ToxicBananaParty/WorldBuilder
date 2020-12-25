@@ -1,4 +1,5 @@
-﻿using WorldBuilder.Data;
+﻿using System.Collections.Generic;
+using WorldBuilder.Data;
 using WorldBuilder.Data.Backend;
 using SadConsole;
 using Console = SadConsole.Console;
@@ -22,6 +23,15 @@ namespace WorldBuilder.Core
             console = Program.console;
             console.Clear();
             Game.OnUpdate = HomeScreenInput;
+            
+            if (NameGenerator.usedCityNames == null || NameGenerator.usedCityNames.Count < 1)
+            {
+                NameGenerator.usedCityNames = new List<string>();
+                foreach (Location loc in instance.locations)
+                    if(loc.type == LocationType.City)
+                        NameGenerator.usedCityNames.Add(loc.name);
+            }
+            
             HomeScreen();
         }
 

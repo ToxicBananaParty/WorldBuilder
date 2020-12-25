@@ -60,7 +60,7 @@ namespace WorldBuilder.Core
                 console.Cursor.IsEnabled = false;
 
                 world = new World(worldName);
-                WorldBuilder.Load(world);
+                WorldBuilder.instance = world;
                 world.AdvanceDays(worldAge * 365, true);
                 world.setDate(new DateTime(worldAge, 1, 1));
                 PopulateTowns();
@@ -104,7 +104,7 @@ namespace WorldBuilder.Core
                 }
             }
             WorldBuilder.Load(world);
-            
+
             console.Print(11, "World Generated.");
         }
     }

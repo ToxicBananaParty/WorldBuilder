@@ -10,6 +10,8 @@ namespace WorldBuilder.Data.Backend
     {
         public static NameList instance;
         
+        public static List<string> usedCityNames;
+        
         public static string GenerateHuman(Gender gender)
         {
             if(instance == null)
@@ -45,9 +47,19 @@ namespace WorldBuilder.Data.Backend
             if (instance == null)
                 throw new NullReferenceException();
 
-            int cityToGet = RandomInt(instance.cityNames.Count);
-            string output = instance.cityNames[cityToGet];
-            instance.cityNames.RemoveAt(cityToGet);
+            if (usedCityNames == null)
+                usedCityNames = new List<string>();
+
+            string output = "";
+            do
+            {
+                int cityToGet = RandomInt(instance.cityNames.Count);
+                output = instance.cityNames[cityToGet];
+            } while (usedCityNames.Contains(output));
+            
+            usedCityNames.Add(output);
+            if (usedCityNames.Count == instance.cityNames.Count)
+                Location.allCityNamesUsed = true;
 
             return output;
         }

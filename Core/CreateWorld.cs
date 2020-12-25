@@ -60,10 +60,52 @@ namespace WorldBuilder.Core
                 console.Cursor.IsEnabled = false;
 
                 world = new World(worldName);
+                WorldBuilder.Load(world);
                 world.AdvanceDays(worldAge * 365, true);
                 world.setDate(new DateTime(worldAge, 1, 1));
-                WorldBuilder.Load(world);
+                PopulateTowns();
+                Game.OnUpdate -= GetStartDate;
             }
+        }
+
+        private static void PopulateTowns()
+        {
+            foreach (Location location in world.locations)
+            {
+                int citizensToAdd = 0;
+                switch (location.type) //Cities have min 50, towns 25, villages 10 citizens
+                {
+                    case LocationType.City:
+                        citizensToAdd = 50 - location.relatedChars.Count;
+                        break;
+                    case LocationType.Town:
+                        citizensToAdd = 25 - location.relatedChars.Count;
+                        break;
+                    case LocationType.Village:
+                        citizensToAdd = 10 - location.relatedChars.Count;
+                        break;
+                    default:
+                        break;
+                }
+
+                for (int i = 0; i < citizensToAdd; i++)
+                {
+                    Character toAdd = new Character(Gender.RANDOM);
+                    toAdd.SetHomeBase(location);
+                    location.relatedChars.Add(toAdd, LocationRelationship.Resident);
+                    
+                    //Get random birthdate for population citizens so they're not all born
+                    //on the day that PopulateTowns() was called
+                    DateTime birthDate = new DateTime(1, 1, 1);
+                    birthDate = birthDate.AddDays(Program.RandomInt(world.date.Year * 365));
+                    toAdd.ChangeBirthDate(birthDate);
+
+                    world.characters.Add(toAdd);
+                }
+            }
+            WorldBuilder.Load(world);
+            
+            console.Print(11, "World Generated.");
         }
     }
 }

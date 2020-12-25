@@ -44,5 +44,24 @@ namespace WorldBuilder.Data.Backend
 		        console.Print(i, row, text, color);
 	        }
         }
+
+        public static string Print(this Gender gender)
+        {
+	        switch (gender)
+	        {
+		        case Gender.CisFemale:
+			        return "Cis Female";
+		        case Gender.CisMale:
+			        return "Cis Male";
+		        case Gender.NonBinary:
+			        return "Non-Binary";
+		        case Gender.TransMale:
+			        return "Trans Male";
+		        case Gender.TransFemale:
+			        return "Trans Female";
+		        default:
+			        return "ERROR IN GENDER PRINT";
+	        }
+        }
     }
 }

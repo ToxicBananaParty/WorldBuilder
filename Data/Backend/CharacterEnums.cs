@@ -46,6 +46,7 @@
         Child,
         Parent,
         Sibling,
+        Neighbor,
         NUM_RELATIONSHIPS
     }
 

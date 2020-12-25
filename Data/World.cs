@@ -63,11 +63,19 @@ namespace WorldBuilder.Data
             int thingToDo = Program.RandomInt(0, 40);
             if (thingToDo < 3)
             {
-                locations.Add(new Location());
+                Location newLoc = new Location();
+                locations.Add(newLoc);
             }
             else if (thingToDo < 11)
             {
-                characters.Add(new Character());
+                Character newChar = new Character();
+                
+                if(locations.Count > 5)
+                    newChar.SetHomeBase(locations[Program.RandomInt(locations.Count)]);
+                else
+                    newChar.SetHomeBase(new Location());
+                
+                characters.Add(newChar);
             }
             else if (thingToDo < 39)
             {

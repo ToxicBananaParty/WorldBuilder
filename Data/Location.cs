@@ -6,6 +6,7 @@ namespace WorldBuilder.Data
 {
     public class Location : IEquatable<Location>
     {
+        public World world { get; private set; }
         public string name { get; private set; }
         public LocationType type { get; private set; }
         public Dictionary<Character, LocationRelationship> relatedChars;
@@ -14,9 +15,11 @@ namespace WorldBuilder.Data
         public Location()
         {
             //TODO: Generate Name
+            name = "DEBUG_LOCATION";
             type = (LocationType) Program.RandomInt((int) LocationType.NUM_TYPES);
             relatedChars = new Dictionary<Character, LocationRelationship>();
             relatedChars.Add(new Character(), LocationRelationship.OwnerCaretaker);
+            world = Core.WorldBuilder.instance;
         }
 
         public Location(string name)
@@ -25,6 +28,7 @@ namespace WorldBuilder.Data
             type = (LocationType) Program.RandomInt((int) LocationType.NUM_TYPES);
             relatedChars = new Dictionary<Character, LocationRelationship>();
             relatedChars.Add(new Character(), LocationRelationship.OwnerCaretaker);
+            world = Core.WorldBuilder.instance;
         }
 
         public Location(string name, LocationType type)
@@ -33,6 +37,7 @@ namespace WorldBuilder.Data
             this.type = type;
             relatedChars = new Dictionary<Character, LocationRelationship>();
             relatedChars.Add(new Character(), LocationRelationship.OwnerCaretaker);
+            world = Core.WorldBuilder.instance;
         }
 
         public bool Equals(Location other)

@@ -6,17 +6,21 @@ namespace WorldBuilder.Data
     {
         public string name { get; private set; }
         public Location headquarters { get; private set; }
+        
+        public World world { get; private set; }
 
         public Organization(string name, Location headquarters)
         {
             this.name = name;
             this.headquarters = headquarters;
+            world = Core.WorldBuilder.instance;
         }
 
         public Organization(Location headquarters)
         {
             //TODO: Generate name
             this.headquarters = headquarters;
+            world = Core.WorldBuilder.instance;
         }
 
         #region Accessors and Mutators

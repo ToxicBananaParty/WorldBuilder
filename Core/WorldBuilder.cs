@@ -21,6 +21,7 @@ namespace WorldBuilder.Core
             instance = toPlay;
             console = Program.console;
             console.Clear();
+            Game.OnUpdate = HomeScreenInput;
             HomeScreen();
         }
 
@@ -40,6 +41,27 @@ namespace WorldBuilder.Core
             console.PrintRow(4, "=");
             
             console.PrintRow(30, "=");
+            console.Print(36, 32, "V - View Random Character");
+            console.Print(36, 33, "B - View Random Event");
+            console.Print(36, 34, "N - View Random Location");
+            console.Print(36, 35, "M - View Random Organization");
+        }
+
+        private static void DisplayCharacter(Character character)
+        {
+            console.Print(8, character.name);
+            console.Print(10, "Born: " + character.birthdate.ToShortDateString());
+            console.Print(12, "Location: " + character.homeBase.name);
+            console.Print(14, "Gender: " + character.gender.Print());
+        }
+
+        private static void HomeScreenInput(GameTime time)
+        {
+            if (Global.KeyboardState.IsKeyPressed(Keys.V))
+            {
+                console.Clear(new Rectangle(0, 5, Program.Width, 24));
+                DisplayCharacter(instance.characters[Program.RandomInt(instance.characters.Count)]);
+            }
         }
     }
 }

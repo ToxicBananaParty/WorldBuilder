@@ -18,13 +18,13 @@ namespace WorldBuilder.Data
         public Gender gender { get; private set; }
         public Dictionary<Character, CharacterRelationship> relatedChars { get; private set; }
         public Location homeBase { get; private set; } //TODO: Implement this
+        public World world { get; private set; }
 
         private World myWorld;
         private bool alive;
 
         public Character()
         {
-            //TODO: Generate birthdate
             gender = (Gender) Program.RandomInt((int) Gender.NUM_GENDERS);
             race = (Race) Program.RandomInt((int) Race.NUM_RACES);
             generateName(race);
@@ -33,16 +33,23 @@ namespace WorldBuilder.Data
 
         public Character(Gender gender)
         {
-            //TODO: Generate birthdate
             this.gender = gender;
             race = (Race) Program.RandomInt((int) Race.NUM_RACES);
             generateName(race);
             initStats();
         }
 
+        public Character(DateTime birthdate)
+        {
+            gender = (Gender) Program.RandomInt((int) Gender.NUM_GENDERS);
+            race = (Race) Program.RandomInt((int) Race.NUM_RACES);
+            generateName(race);
+            initStats(true);
+            this.birthdate = birthdate;
+        }
+
         public Character(Gender gender, Race race)
         {
-            //TODO: Generate birthdate
             this.gender = gender;
             this.race = race;
             generateName(race);
@@ -51,7 +58,6 @@ namespace WorldBuilder.Data
 
         public Character(string name, Gender gender)
         {
-            //TODO: Generate birthdate
             this.name = name;
             this.gender = gender;
             race = (Race) Program.RandomInt((int) Race.NUM_RACES);
@@ -60,7 +66,6 @@ namespace WorldBuilder.Data
 
         public Character(string name, Gender gender, Race race)
         {
-            //TODO: Generate birthdate
             this.name = name;
             this.gender = gender;
             this.race = race;
@@ -88,7 +93,7 @@ namespace WorldBuilder.Data
             child.AddRelatedChar(partner, CharacterRelationship.Parent);
         }
 
-        private void initStats()
+        private void initStats(bool hasBirthDate = false)
         {
             myWorld = Core.WorldBuilder.instance;
             alive = true;
@@ -101,6 +106,13 @@ namespace WorldBuilder.Data
             
             if(gender == Gender.RANDOM)
                 gender = (Gender)Program.RandomInt((int)Gender.NUM_GENDERS);
+
+            world = Core.WorldBuilder.instance;
+            
+            if(!hasBirthDate)
+                birthdate = world.date;
+            
+            world.AddEvent(new Event(this, EventType.Birth));
         }
 
         private void generateName(Race race)
@@ -189,6 +201,16 @@ namespace WorldBuilder.Data
         public void RemoveRelatedChar(Character toRemove)
         {
             relatedChars.Remove(toRemove);
+        }
+
+        public void SetHomeBase(Location hq)
+        {
+            homeBase = hq;
+        }
+
+        public void ChangeBirthDate(DateTime newDate)
+        {
+            birthdate = newDate;
         }
 
         public bool Equals(Character other)

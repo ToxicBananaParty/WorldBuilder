@@ -14,11 +14,11 @@ namespace WorldBuilder.Data
 
         public Event(Character performer)
         {
-            //TODO: Event name generator
-
             this.performer = performer;
             world = Core.WorldBuilder.instance;
             date = world.date;
+            type = (EventType) Program.RandomInt((int) EventType.NUM_EVENT_TYPES);
+            name = getName();
         }
 
         public Event(Character performer, EventType type)
@@ -27,27 +27,39 @@ namespace WorldBuilder.Data
             this.type = type;
             world = Core.WorldBuilder.instance;
             date = world.date;
+            name = getName();
         }
 
         public Event(Character performer, Character performee)
         {
-            //TODO: Event name generator
-
             this.performer = performer;
             this.performee = performee;
             world = Core.WorldBuilder.instance;
             date = world.date;
+            type = (EventType) Program.RandomInt((int) EventType.NUM_EVENT_TYPES);
+            name = getName();
         }
         
         public Event(Character performer, Character performee, EventType type)
         {
-            //TODO: Event name generator
-
             this.performer = performer;
             this.performee = performee;
             this.type = type;
             world = Core.WorldBuilder.instance;
             date = world.date;
+            name = getName();
+        }
+
+        private string getName()
+        {
+            //TODO: Implement full event name generator
+            switch (type)
+            {
+                case EventType.Birth:
+                    return performer.name + " was born";
+                default:
+                    return "DEBUG_EVENTNAME";
+            }
         }
 
         public bool Equals(Event other)

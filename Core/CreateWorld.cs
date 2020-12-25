@@ -73,13 +73,13 @@ namespace WorldBuilder.Core
             foreach (Location location in world.locations)
             {
                 int citizensToAdd = 0;
-                switch (location.type) //Cities have min 50, towns 25, villages 10 citizens
+                switch (location.type) //Cities have min 30, towns 20, villages 10 citizens
                 {
                     case LocationType.City:
-                        citizensToAdd = 50 - location.relatedChars.Count;
+                        citizensToAdd = 30 - location.relatedChars.Count;
                         break;
                     case LocationType.Town:
-                        citizensToAdd = 25 - location.relatedChars.Count;
+                        citizensToAdd = 20 - location.relatedChars.Count;
                         break;
                     case LocationType.Village:
                         citizensToAdd = 10 - location.relatedChars.Count;

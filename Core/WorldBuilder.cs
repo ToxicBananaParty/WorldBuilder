@@ -65,12 +65,55 @@ namespace WorldBuilder.Core
             console.Print(14, "Gender: " + character.gender.Print());
         }
 
+        private static void DisplayEvent(Event toDisplay)
+        {
+            console.Print(8, toDisplay.name);
+            console.Print(10, "Happened On: " + toDisplay.date.ToShortDateString());
+            console.Print(12, "Performer: " + toDisplay.performer.name);
+
+            string performeeText = "";
+            if (toDisplay.performee?.name == null)
+                performeeText = "N/A";
+            else
+                performeeText = toDisplay.performee.name;
+            console.Print(14, "Performee: " + performeeText);
+        }
+
+        private static void DisplayLocation(Location location)
+        {
+            console.Print(8, location.name);
+            
+            foreach(KeyValuePair<Character, LocationRelationship> character in location.relatedChars)
+            {
+                if(character.Value == LocationRelationship.OwnerCaretaker)
+                    console.Print(10, "Owner/Caretaker: " + character.Key.name);
+            }
+        }
+
+        private static void DisplayEvents()
+        {
+            for (int i = 5; i < 29; i++)
+            {
+                console.Print(i, instance.events[Program.RandomInt(instance.events.Count)].name);
+            }
+        }
+
         private static void HomeScreenInput(GameTime time)
         {
             if (Global.KeyboardState.IsKeyPressed(Keys.V))
             {
                 console.Clear(new Rectangle(0, 5, Program.Width, 24));
                 DisplayCharacter(instance.characters[Program.RandomInt(instance.characters.Count)]);
+            }
+            else if (Global.KeyboardState.IsKeyPressed(Keys.B))
+            {
+                console.Clear(new Rectangle(0, 5, Program.Width, 24));
+                DisplayEvent(instance.events[Program.RandomInt(instance.events.Count)]);
+            }
+            else if (Global.KeyboardState.IsKeyPressed(Keys.N))
+            {
+                console.Clear(new Rectangle(0, 5, Program.Width, 24));
+                DisplayLocation(instance.locations[Program.RandomInt(instance.locations.Count)]);
             }
         }
     }

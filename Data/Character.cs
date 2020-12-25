@@ -74,6 +74,8 @@ namespace WorldBuilder.Data
 
         public void HaveChild()
         {
+            if (getAge() < 18) return;
+            
             Character partner = null;
             foreach (KeyValuePair<Character, CharacterRelationship> relatedChar in relatedChars)
             {
@@ -86,6 +88,9 @@ namespace WorldBuilder.Data
             {
                 //TODO: Get partner from nearby related chars
             }
+
+            if (partner.getAge() < 18)
+                return;
 
             Character child = new Character(Gender.RANDOM, race);
             relatedChars.Add(child, CharacterRelationship.Child);

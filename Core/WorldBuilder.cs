@@ -82,11 +82,15 @@ namespace WorldBuilder.Core
         private static void DisplayLocation(Location location)
         {
             console.Print(8, location.name);
-            
+            console.Print(10, location.type.ToString());
+
+            int rowAdd = 12;
             foreach(KeyValuePair<Character, LocationRelationship> character in location.relatedChars)
             {
-                if(character.Value == LocationRelationship.OwnerCaretaker)
-                    console.Print(10, "Owner/Caretaker: " + character.Key.name);
+                if (character.Value == LocationRelationship.OwnerCaretaker) {
+                    console.Print(rowAdd, "Owner/Caretaker: " + character.Key.name);
+                    rowAdd += 2;
+                }
             }
         }
 

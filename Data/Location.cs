@@ -57,7 +57,7 @@ namespace WorldBuilder.Data
                 case LocationType.City:
                     return NameGenerator.GenerateCity();
                 case LocationType.Town:
-                    return "DEBUG_Town";
+                    return NameGenerator.GenerateTown();
                 case LocationType.Village:
                     return "DEBUG_Village";
                 case LocationType.Dungeon:

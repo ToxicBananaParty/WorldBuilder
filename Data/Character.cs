@@ -17,7 +17,7 @@ namespace WorldBuilder.Data
         public Race race { get; private set; }
         public Gender gender { get; private set; }
         public Dictionary<Character, CharacterRelationship> relatedChars { get; private set; }
-        public Location homeBase { get; private set; } //TODO: Implement this
+        public Location homeBase { get; private set; }
         public World world { get; private set; }
 
         private World myWorld;
@@ -87,6 +87,7 @@ namespace WorldBuilder.Data
             if (partner == null)
             {
                 //TODO: Get partner from nearby related chars
+                return;
             }
 
             if (partner.getAge() < 18)

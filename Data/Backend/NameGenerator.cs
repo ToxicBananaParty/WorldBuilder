@@ -10,7 +10,7 @@ namespace WorldBuilder.Data.Backend
     {
         public static NameList instance;
         
-        public static List<string> usedCityNames;
+        public static List<string> usedCityNames, usedTownNames;
         
         public static string GenerateHuman(Gender gender)
         {
@@ -64,6 +64,27 @@ namespace WorldBuilder.Data.Backend
             return output;
         }
 
+        public static string GenerateTown()
+        {
+            if (instance == null)
+                throw new NullReferenceException();
+
+            if (usedTownNames == null)
+                usedTownNames = new List<string>();
+
+            string output = "";
+            do {
+                int townToGet = RandomInt(instance.townNames.Count);
+                output = instance.townNames[townToGet];
+            } while (usedTownNames.Contains(output));
+            
+            usedTownNames.Add(output);
+            if (usedTownNames.Count == instance.townNames.Count)
+                Location.allTownNamesUsed = true;
+
+            return output;
+        }
+
         //EXISTS ONLY TO BE READ FROM JSON
         //ALL LOGIC DONE IN NameGenerator CLASS
         public class NameList
@@ -73,6 +94,9 @@ namespace WorldBuilder.Data.Backend
 
             [JsonProperty("city")] 
             public List<string> cityNames;
+
+            [JsonProperty("town")] 
+            public List<string> townNames;
 
             public NameList()
             {

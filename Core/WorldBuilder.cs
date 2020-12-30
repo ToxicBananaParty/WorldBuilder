@@ -56,6 +56,8 @@ namespace WorldBuilder.Core
             console.Print(36, 33, "N - View Random Location");
             console.Print(36, 34, "M - View Random Organization");
         }
+        
+        //TODO Selection Menu (Update methods) for each of these Display methods
 
         private static void DisplayCharacter(Character character)
         {
@@ -92,6 +94,17 @@ namespace WorldBuilder.Core
                     rowAdd += 2;
                 }
             }
+
+            console.Print(rowAdd, "Inhabitants:");
+            rowAdd += 2;
+            
+            foreach (KeyValuePair<Character, LocationRelationship> character in location.relatedChars) {
+                if (character.Value == LocationRelationship.Resident && rowAdd < 28) {
+                    console.Print(rowAdd, character.Key.name);
+                    rowAdd++;
+                }
+            }
+            
         }
 
         private static void DisplayEvents()

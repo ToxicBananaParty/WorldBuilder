@@ -57,7 +57,7 @@ namespace WorldBuilder.Core
             console.Print(36, 34, "M - View Random Organization");
         }
         
-        //TODO Selection Menu (Update methods) for each of these Display methods
+        //TODO Selection Menus (Update methods) for each of these Display methods
 
         private static void DisplayCharacter(Character character)
         {

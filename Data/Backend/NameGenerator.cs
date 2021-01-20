@@ -24,10 +24,10 @@ namespace WorldBuilder.Data.Backend
             NameList.HumanName humanName = instance.humanName;
             string firstname, lastname;
 
-            if (Character.getGender(gender) > 0) {
+            if (Character.getSex(gender) > 0) {
                 firstname = humanName.male[RandomInt(humanName.male.Length)];
             }
-            else if (Character.getGender(gender) < 0) {
+            else if (Character.getSex(gender) < 0) {
                 firstname = humanName.female[RandomInt(humanName.female.Length)];
             }
             else {

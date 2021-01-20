@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using WorldBuilder.Data.Backend;
 using Attribute = WorldBuilder.Data.Backend.Attribute;
 
@@ -71,7 +72,48 @@ namespace WorldBuilder.Data
             this.race = race;
             initStats();
         }
+        
+        //TODO: Implement HaveChild, GetMarried
 
+        public void GetMarried(Character other = null)
+        {
+            //TODO: Test that all these combined RemoveRelated and AddRelated calls dont break shit
+            if (other == null) {
+                
+                //If has lover, marry them
+                foreach (KeyValuePair<Character, CharacterRelationship> relatedChar in relatedChars) {
+                    if (relatedChar.Value == CharacterRelationship.Lover) {
+                        RemoveRelatedChar(relatedChar.Key);
+                        AddRelatedChar(relatedChar.Key, CharacterRelationship.Spouse);
+                        return;
+                    }
+                    
+                }
+                
+                //If not, marry random unmarried person in same Location
+                Character mySpouse;
+                do {
+                    //TODO: Prevent overflow if location is empty or everyone there is married
+                    mySpouse = homeBase.relatedChars.Keys.ElementAt(Program.RandomInt(homeBase.relatedChars.Count));
+                } 
+                while (mySpouse.relatedChars.ContainsValue(CharacterRelationship.Spouse));
+
+            }
+            else {
+                
+                //Break up with lovers
+                foreach (KeyValuePair<Character, CharacterRelationship> relatedChar in relatedChars) {
+                    if (relatedChar.Value == CharacterRelationship.Lover) {
+                        RemoveRelatedChar(relatedChar.Key);
+                        AddRelatedChar(relatedChar.Key, CharacterRelationship.Enemy);
+                    }
+                }
+                
+                RemoveRelatedChar(other);
+                AddRelatedChar(other, CharacterRelationship.Spouse);
+            }
+        }
+        
         public void HaveChild()
         {
             if (getAge() < 18) return;
@@ -138,10 +180,10 @@ namespace WorldBuilder.Data
 
         public static int getGender(Character toCheck)
         {
-            return getGender(toCheck.gender);
+            return getSex(toCheck.gender);
         }
 
-        public static int getGender(Gender toCheck)
+        public static int getSex(Gender toCheck)
         {
             if (toCheck == Gender.CisFemale || toCheck == Gender.TransFemale)
                 return -1;
